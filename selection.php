@@ -26,6 +26,7 @@ class Selection {
 			'timestamp_passed' => $time_passed
 		);
 		return $userinfo;
+		# Returning:
 		/* 
 		array(3) { 
 			["datatime"]=> string(19) "2012-02-04 22:59:55" 
@@ -33,5 +34,5 @@ class Selection {
 			["timestamp_passed"]=> int(17799910) 
 		}	
 		*/
-		}
+	}
 }

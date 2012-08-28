@@ -13,7 +13,6 @@ class User {
 		$conn = DB_Instance::getDBO(); #DB Connection
 		
 		if (!$this->data) { # Caching
-			echo "nocache";
 			$query = $conn->prepare("SELECT spent, date FROM `users` WHERE `uid`=?");
 			$result = $query->execute(array($this->uid));
 			$this->data = $query->fetch(PDO::FETCH_NUM);			

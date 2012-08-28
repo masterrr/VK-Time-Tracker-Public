@@ -2,7 +2,7 @@
 
 class User {
 	private $uid = NULL;
-	static $data = NULL;
+	private static $data = NULL;
 
 	function __construct($id) {
 		$this->uid = $id;

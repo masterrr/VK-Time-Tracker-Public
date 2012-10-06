@@ -30,6 +30,7 @@ class User {
 		unset($query, $result, $data);	
 		$conn = NULL;
 	}
+	
 	# Spent time in seconds (timestamp)
 	function get_spent() { $userinfo = $this->getuserinfo(); return $userinfo['spent']; } 
 	# Datetime (2012-02-04 22:59:55)
@@ -40,28 +41,33 @@ class User {
 	function get_time_passed_timestamp() { $timestamp = $this -> get_registration_timestamp(); return time() - $timestamp; } 
 }
 class Request {
+	private $all_time = 0;
+	private $count_users = 0;
+	
+	# Counting all user's time in !minutes!
 	function get_all_time() {
-		$conn = DB_Instance::getDBO(); #DB Connection
-		$query = $conn->prepare("SELECT SUM(spent) FROM users");
-		$result = $query->execute();
-		if ($result) {
-			 $result =  $query->fetch(PDO::FETCH_NUM);	
-			 return (int)$result[0];	
-		} else {
-			return NULL;
+		if (!$this->all_time) {
+			$conn = DB_Instance::getDBO(); #DB Connection
+			$query = $conn->prepare("SELECT SUM(spent) FROM users");
+			$result = $query->execute();
+			$temp = $query->fetch(PDO::FETCH_NUM);
+			$this->all_time = $temp[0];
 		}
-		unset($query, $result, $conn);
+		return $this->all_time; // (int)385838 (minutes)
+		unset($temp,$result,$query);		
 	}
+	
+	# Couting users
 	function count_users() {
-		$conn = DB_Instance::getDBO();
-		$query = $conn->prepare("SELECT COUNT(*) FROM users");
-		$result = $query->execute();
-		if ($result) {
-			$result =  $query->fetch(PDO::FETCH_NUM);	
-			return (int)$result[0];	
-		} else {
-			return NULL;
+		if (!$this->count_users) {
+			$conn = DB_Instance::getDBO(); #DB Connection
+			$query = $conn->prepare("SELECT COUNT(*) FROM users");
+			$result = $query->execute();
+			$temp = $query->fetch(PDO::FETCH_NUM);
+			$this->count_users = $temp[0];
 		}
+		return $this->count_users; // (int)1456
+		unset($temp,$result,$query);		
 	}
 }
 

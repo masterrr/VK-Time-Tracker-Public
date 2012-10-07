@@ -2,6 +2,7 @@
 class User {
 	private $uid = NULL;
 	private $data = NULL;
+	private $alreadyexists = FALSE;
 	var $name = '{name}';
 	var $surname = '{surname}';
 	var $sex = 0;
@@ -12,6 +13,18 @@ class User {
 
 	function __construct($id) {
 		$this->uid = $id;
+	}
+	
+	function exists() {
+		if (!$this->alreadyexists) {
+			$conn = DB_Instance::getDBO(); #DB Connection
+			$query = $conn->prepare("SELECT COUNT(*) FROM `users` WHERE uid=$this->uid");
+			$result = $query->execute();
+			$temp = $query->fetch(PDO::FETCH_NUM);
+			$this->alreadyexists = $temp[0];
+		}
+		return $this->alreadyexists; // (int)1456
+		unset($temp,$result,$query);		
 	}
 	
 	# Gathering how many time user has spent, and when he has registered
